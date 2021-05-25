@@ -1,5 +1,5 @@
 ### OK 메일을 보낸다.
-POST http://localhost:80/api/send
+POST http://localhost:80/api/send/template
 Content-Type: application/json
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZXIiLCJVU0VSTkFNRSI6ImFkbWluIiwiVVNFUl9ST0xFIjoiUk9MRV9BRE1JTiJ9.57njAlTJ0BPLxx4MmISj8z4KoteI3mcY1MrWLrP1btE
 

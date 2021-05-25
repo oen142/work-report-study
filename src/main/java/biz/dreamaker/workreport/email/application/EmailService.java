@@ -6,4 +6,7 @@ public interface EmailService {
         String subject,
         String text);
 
+    void sendSimpleMessageUsingTemplate(String to,
+        String subject,
+        String... templateModel);
 }

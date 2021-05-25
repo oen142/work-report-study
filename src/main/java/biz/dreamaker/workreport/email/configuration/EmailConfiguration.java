@@ -47,12 +47,16 @@ public class EmailConfiguration {
     }
 
     @Bean
-    public SimpleMailMessage templateSimpleMessage(){
+    public SimpleMailMessage SimpleMailMessage() {
         SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setText("This is the test email template for your email:\n%s\n");
+        message.setText("안녕하세요, %s 님.\n"
+            + "%s님의 %s 작업 일지 내용입니다.\n"
+            + "자세한 사항은 첨부된 파일을 확인해 주세요.\n"
+            + "감사합니다.");
         return message;
     }
+
     @Bean
     public ResourceBundleMessageSource emailMessageSource() {
         final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();

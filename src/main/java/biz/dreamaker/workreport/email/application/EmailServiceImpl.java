@@ -20,7 +20,6 @@ public class EmailServiceImpl implements EmailService {
         this.simpleMailMessage = simpleMailMessage;
     }
 
-
     @Async
     @Override
     public void sendSimpleMessage(String to, String subject, String text) {
@@ -36,5 +35,12 @@ public class EmailServiceImpl implements EmailService {
             e.printStackTrace();
         }
 
+    }
+
+    @Async
+    @Override
+    public void sendSimpleMessageUsingTemplate(String to, String subject, String... templateModel) {
+        String text = String.format(simpleMailMessage.getText(), templateModel);
+        sendSimpleMessage(to, subject, text);
     }
 }

@@ -65,4 +65,16 @@ public class EmailController {
 
         return ResponseEntity.ok().body("success");
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_SUPER')")
+    @PostMapping("/api/send/template")
+    public ResponseEntity<String> createSimpleTemplate(
+        @Valid @RequestBody MailObject mailObject
+    ) {
+
+        emailService.sendSimpleMessageUsingTemplate(mailObject.getTo(),
+            mailObject.getSubject(), "드림메이커" , "테스트작업자" , "2020-02-10");
+
+        return ResponseEntity.ok().body("success");
+    }
 }
