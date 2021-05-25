@@ -1,0 +1,39 @@
+spring:
+  profiles:
+    active: local
+  mail:
+    templates:
+      path: mail-templates
+    host: smtp.gmail.com
+    port: 587
+    username: oen142123@gmail.com
+    password: zjijzavbmnnybocn
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  jpa:
+    show-sql: true
+    database: mysql
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Seoul
+        format_sql: true
+    open-in-view: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/workreport
+    username: root
+    password: strongpassword
+    driver-class-name: com.mysql.cj.jdbc.Driver
+jwt:
+  sign-key: springtestsignkey
+
+server:
+  port: 80
+attactment:
+  invoice: path_to_file

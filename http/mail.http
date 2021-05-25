@@ -1,0 +1,13 @@
+### OK 메일을 보낸다.
+POST http://localhost:80/api/send
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZXIiLCJVU0VSTkFNRSI6ImFkbWluIiwiVVNFUl9ST0xFIjoiUk9MRV9BRE1JTiJ9.57njAlTJ0BPLxx4MmISj8z4KoteI3mcY1MrWLrP1btE
+
+{
+  "to": "oen142@naver.com",
+  "recipientName": "김종완",
+  "subject": "테스트이메일입니다.",
+  "text": "본문입니다.",
+  "senderName" : "김종완",
+  "templateEngine" : "ee"
+}
