@@ -30,6 +30,7 @@ spring:
     username: root
     password: Kho0923!!
     driver-class-name: com.mysql.cj.jdbc.Driver
+
 jwt:
   sign-key: springtestsignkey
 
