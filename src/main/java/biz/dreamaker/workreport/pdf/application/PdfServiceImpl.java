@@ -29,7 +29,7 @@ public class PdfServiceImpl implements PdfService {
             PdfWriter instance = PdfWriter
                     .getInstance(document, outputStream);
             document.open();
-            ClassPathResource resource = new ClassPathResource("/static/font/NanumBarunGothic.TTF");
+            ClassPathResource resource = new ClassPathResource("/static/font/NanumBarunGothic.ttf");
             Font nanumBarunGothic = FontFactory.getFont(resource.getURL().toString(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12);
             FontSelector sel = new FontSelector();
             sel.addFont(new Font(Font.TIMES_ROMAN, 12));
