@@ -54,6 +54,10 @@ public class AccountService {
         Account account = accountRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을수 없습니다."));
 
+        boolean isAccount = companyRepository.existsByAccount(account);
+        if (isAccount) {
+            throw new RuntimeException("해당 아이디로 등록되어 있는 회사계정이 있습니다.");
+        }
         Company company = request.ofPersonal(account);
         companyRepository.save(company);
         return AdminInfoResponse.from(account);
@@ -62,6 +66,11 @@ public class AccountService {
     public AdminInfoResponse updateAccountForCompanyOfGroup(String username, CompanyRequest request) {
         Account account = accountRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을수 없습니다."));
+
+        boolean isAccount = companyRepository.existsByAccount(account);
+        if (isAccount) {
+            throw new RuntimeException("해당 아이디로 등록되어 있는 회사계정이 있습니다.");
+        }
         Company company = request.ofGroup(account);
         companyRepository.save(company);
         return AdminInfoResponse.from(account);

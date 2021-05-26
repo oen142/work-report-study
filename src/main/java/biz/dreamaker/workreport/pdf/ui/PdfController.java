@@ -5,6 +5,7 @@ import biz.dreamaker.workreport.pdf.application.PdfService;
 import biz.dreamaker.workreport.pdf.exception.PdfIOException;
 import biz.dreamaker.workreport.storage.FileUploadController;
 import biz.dreamaker.workreport.storage.StorageService;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,17 +14,15 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
@@ -35,17 +34,16 @@ public class PdfController {
     private final StorageService storageService;
 
     public PdfController(PdfService pdfService,
-        PdfFileService pdfFileService,
-        StorageService storageService) {
+                         PdfFileService pdfFileService,
+                         StorageService storageService) {
         this.pdfService = pdfService;
         this.pdfFileService = pdfFileService;
         this.storageService = storageService;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_SUPER')")
     @PostMapping("/api/pdf")
     public ResponseEntity<String> createMail(
-        @RequestParam("file") List<MultipartFile> files
+            @RequestParam("file") List<MultipartFile> files
     ) throws IOException {
         List<String> uploadedFiles = new ArrayList<>();
         files.forEach(f -> {
@@ -53,13 +51,13 @@ public class PdfController {
             Path path = storageService.load(storeHref);
 
             uploadedFiles.add(MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
-                "serveFile", path.getFileName().toString())
-                .build()
-                .toUri()
-                .toString());
+                    "serveFile", path.getFileName().toString())
+                    .build()
+                    .toUri()
+                    .toString());
         });
         System.out.println("uploadedFiles = " + uploadedFiles.get(0));
-        pdfService.generatePdf(uploadedFiles.get(0));
+        pdfService.generatePdf( "콘텐츠입니다.", uploadedFiles.get(0));
 
         return ResponseEntity.ok().body("success");
     }
@@ -68,19 +66,30 @@ public class PdfController {
     public ResponseEntity<List<String>> listUploadedFiles(Model model) throws IOException {
 
         List<String> serveFile = pdfFileService.loadAll().map(
-            path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
-                "serveFile", path.getFileName().toString())
-                .build()
-                .toUri()
-                .toString())
-            .collect(Collectors.toList());
+                path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
+                        "servePdf", path.getFileName().toString())
+                        .build()
+                        .toUri()
+                        .toString())
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok().body(serveFile);
     }
 
+    @GetMapping("/pdfs/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> servePdf(@PathVariable String filename) {
+
+        Resource file = storageService.loadAsResource(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"")
+                .contentType(MediaType.parseMediaType("application/pdf"))
+                .body(file);
+    }
+
     @GetMapping(value = "/filess/{fileName}")
     public ResponseEntity<InputStreamResource> getTermsConditions(@PathVariable String fileName)
-        throws FileNotFoundException {
+            throws FileNotFoundException {
 
         String filePath = "./pdf/";
         System.out.println("fileName = " + fileName);
@@ -91,9 +100,9 @@ public class PdfController {
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
         return ResponseEntity.ok()
-            .headers(headers)
-            .contentLength(file.length())
-            .contentType(MediaType.parseMediaType("application/pdf"))
-            .body(resource);
+                .headers(headers)
+                .contentLength(file.length())
+                .contentType(MediaType.parseMediaType("application/pdf"))
+                .body(resource);
     }
 }

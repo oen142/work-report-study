@@ -6,7 +6,9 @@ import biz.dreamaker.workreport.report.dto.WorkReportInfoResponse;
 import biz.dreamaker.workreport.security.dto.ParseAuthenticationToAccount;
 import biz.dreamaker.workreport.storage.FileUploadController;
 import biz.dreamaker.workreport.storage.StorageService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -70,7 +72,8 @@ public class WorkReportController {
     @PutMapping("/api/work-report/{id}/sign")
     public ResponseEntity<WorkReportInfoResponse> signWorkReport(
             @PathVariable Long id,
-            @RequestParam MultipartFile file
+            @RequestParam MultipartFile file,
+            @RequestParam String email
     ) {
         String storeHref = storageService.store(file);
         Path path = storageService.load(storeHref);
@@ -81,7 +84,7 @@ public class WorkReportController {
                 .toUri()
                 .toString();
 
-        WorkReportInfoResponse response = workReportService.signWorkReport(id, serveFile);
+        WorkReportInfoResponse response = workReportService.signWorkReport(id, serveFile, email);
 
         return ResponseEntity.ok().body(response);
     }

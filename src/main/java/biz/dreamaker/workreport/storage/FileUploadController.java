@@ -2,6 +2,7 @@ package biz.dreamaker.workreport.storage;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -33,12 +34,12 @@ public class FileUploadController {
     public String listUploadedFiles(Model model) throws IOException {
 
         model.addAttribute("files", storageService.loadAll().map(
-            path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
-                "serveFile", path.getFileName().toString())
-                .build()
-                .toUri()
-                .toString())
-            .collect(Collectors.toList()));
+                path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
+                        "serveFile", path.getFileName().toString())
+                        .build()
+                        .toUri()
+                        .toString())
+                .collect(Collectors.toList()));
 
         return "uploadForm";
     }
@@ -49,18 +50,18 @@ public class FileUploadController {
 
         Resource file = storageService.loadAsResource(filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-            "attachment; filename=\"" + file.getFilename() + "\"")
-
-            .contentType(MediaType.parseMediaType("application/pdf")).body(file);
+                "attachment; filename=\"" + file.getFilename() + "\"")
+                //.contentType(MediaType.parseMediaType("application/pdf"))
+                .body(file);
     }
 
     @PostMapping("/")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
-        RedirectAttributes redirectAttributes) {
+                                   RedirectAttributes redirectAttributes) {
 
         String fileName = storageService.store(file);
         redirectAttributes.addFlashAttribute("message",
-            "You successfully uploaded " + file.getOriginalFilename() + "!");
+                "You successfully uploaded " + file.getOriginalFilename() + "!");
 
         return "redirect:/";
     }

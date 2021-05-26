@@ -43,6 +43,7 @@ public class WorkReport extends BasicEntity {
     private Long workPay;
 
     private Long addedPay;
+    private boolean payedStatus;
 
     private boolean checked;
 
@@ -59,8 +60,10 @@ public class WorkReport extends BasicEntity {
     private String representativeCompanyNumber;
     private String representativeFaxNumber;
 
+
     private String dispatcherName;
     private String dispatcherPhoneNumber;
+    private String dispatcherEmail;
 
     @Embedded
     private Address workAddress;
@@ -76,8 +79,9 @@ public class WorkReport extends BasicEntity {
     private String picture;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private WorkReport(Long id, LocalDate workedAt, String companyName, String workPlaceName, String workerName, String workerPhoneNumber, String workDevice, String workDeviceNumber, LocalDateTime workStartDateTime, LocalDateTime workEndDateTime, Long workPay, Long addedPay, boolean checked, LocalDate payedDate, String gasStationName, Long gasAmount, String representativeName, String representativePhoneNumber, String representativeCompanyNumber, String representativeFaxNumber, String dispatcherName, String dispatcherPhoneNumber, Address workAddress, String memo, Account account
-            , List<Picture> pictures, String picture) {
+    private WorkReport(Long id, LocalDate workedAt, String companyName, String workPlaceName, String workerName, String workerPhoneNumber, String workDevice, String workDeviceNumber, LocalDateTime workStartDateTime,
+                       LocalDateTime workEndDateTime, Long workPay, Long addedPay, boolean checked, boolean payedStatus, LocalDate payedDate, String gasStationName, Long gasAmount, String representativeName, String representativePhoneNumber, String representativeCompanyNumber, String representativeFaxNumber, String dispatcherName, String dispatcherPhoneNumber, Address workAddress, String memo, Account account
+            , List<Picture> pictures, String picture, String dispatcherEmail) {
         this.id = id;
         this.workedAt = workedAt;
         this.companyName = companyName;
@@ -91,6 +95,7 @@ public class WorkReport extends BasicEntity {
         this.workPay = workPay;
         this.addedPay = addedPay;
         this.checked = checked;
+        this.payedStatus = payedStatus;
         this.payedDate = payedDate;
         this.gasStationName = gasStationName;
         this.gasAmount = gasAmount;
@@ -105,12 +110,13 @@ public class WorkReport extends BasicEntity {
         this.account = account;
         this.pictures.addAll(pictures);
         this.picture = picture;
+        this.dispatcherEmail = dispatcherEmail;
     }
 
     public static WorkReport ofNew(LocalDate workedAt, String companyName, String workPlaceName, String workerName,
                                    String workerPhoneNumber, String workDevice, String workDeviceNumber,
                                    LocalDateTime workStartDateTime, LocalDateTime workEndDateTime, Long workPay,
-                                   Long addedPay, boolean checked, LocalDate payedDate, String gasStationName,
+                                   Long addedPay, LocalDate payedDate, boolean payedStatus, String gasStationName,
                                    Long gasAmount, String representativeName, String representativePhoneNumber,
                                    String representativeCompanyNumber, String representativeFaxNumber, String dispatcherName,
                                    String dispatcherPhoneNumber, Address workAddress, String memo, Account account, List<Picture> pictures) {
@@ -127,7 +133,8 @@ public class WorkReport extends BasicEntity {
                 .workEndDateTime(workEndDateTime)
                 .workPay(workPay)
                 .addedPay(addedPay)
-                .checked(checked)
+                .checked(false)
+                .payedStatus(payedStatus)
                 .payedDate(payedDate)
                 .gasStationName(gasStationName)
                 .gasAmount(gasAmount)
@@ -142,12 +149,14 @@ public class WorkReport extends BasicEntity {
                 .account(account)
                 .pictures(pictures)
                 .picture(null)
+                .dispatcherEmail(null)
                 .build();
     }
 
-    public void sign(String file) {
+    public void sign(String file, String dispatcherEmail) {
         this.checked = true;
         this.picture = file;
+        this.dispatcherEmail = dispatcherEmail;
     }
 }
 

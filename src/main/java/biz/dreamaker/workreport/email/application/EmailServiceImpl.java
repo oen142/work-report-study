@@ -6,6 +6,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class EmailServiceImpl implements EmailService {
 
@@ -40,7 +42,7 @@ public class EmailServiceImpl implements EmailService {
     @Async
     @Override
     public void sendSimpleMessageUsingTemplate(String to, String subject, String... templateModel) {
-        String text = String.format(simpleMailMessage.getText(), templateModel);
+        String text = String.format(Objects.requireNonNull(simpleMailMessage.getText()), templateModel);
         sendSimpleMessage(to, subject, text);
     }
 }

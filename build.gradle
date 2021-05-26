@@ -41,6 +41,8 @@ dependencies {
 
     //open pdf
     implementation group: 'com.github.librepdf', name: 'openpdf', version: '1.3.26'
+// https://mvnrepository.com/artifact/com.github.librepdf/openpdf-fonts-extra
+    implementation group: 'com.github.librepdf', name: 'openpdf-fonts-extra', version: '1.3.26'
 
 
     // handlebars

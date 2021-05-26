@@ -1,0 +1,45 @@
+### OK 작업일보를 등록합니다.
+PUT http://localhost:80/api/work-report
+Content-Type: multipart/form-data
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZXIiLCJVU0VSTkFNRSI6ImFkbWluIiwiVVNFUl9ST0xFIjoiUk9MRV9DT01QQU5ZIn0.rVZPdzT9lT94hy6nGqgJwuV_x5ItoUn4m3upjDE-GVU
+
+{
+  "workedAt" : "2020-02-02",
+  "comanyName" : "회사이름",
+  "workPlaceName" : "작업장 이름",
+  "workerName" : "작업자이름",
+  "workerPhoneNumber" : "작업자 핸드폰번호",
+  "workerDevice" : "작업 기기",
+  "workerDeviceNumber" : "작업 기기 일련번호",
+  "workStartDateTime" : "2016-11-09T11:44:44.797",
+  "workEndDateTime" : "2016-11-09T13:44:44.797",
+  "workPay" : "1000",
+  "addedPay" : "10000",
+  "payedDate" : "2020-05-05",
+  "pyedStatus" : "false",
+  "gasStationName" : "기름넣는이름",
+  "gasAmount" : "100",
+  "representativeName" : "담당자이름",
+  "representativePhoneNumber" : "010-0000-0000",
+  "representativeCompanyNumber" : "test",
+  "representativeFaxNumber" : "01-22222",
+  "dispatcherName" : "",
+  "dispatcherPhoneNumber" : "010-0000-0000",
+  "workAddress" : {
+      "zipcode" : "01010",
+      "detail" : "자세주소",
+      "basic" : "기본주소"
+  },
+  "memo" : "메모",
+  "files" : 파일들
+}
+
+### OK 작업일보에 담당자가 싸인을 합니다.
+PUT http://localhost:80/api/work-report/{id}/sign
+Content-Type: multipart/form-data
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZXIiLCJVU0VSTkFNRSI6ImFkbWluIiwiVVNFUl9ST0xFIjoiUk9MRV9DT01QQU5ZIn0.rVZPdzT9lT94hy6nGqgJwuV_x5ItoUn4m3upjDE-GVU
+
+{
+  "file" : 싸인파일
+}
+

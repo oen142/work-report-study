@@ -4,10 +4,12 @@ import biz.dreamaker.workreport.report.entity.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
 public class AddressRequest {
 
     private String zipcode;

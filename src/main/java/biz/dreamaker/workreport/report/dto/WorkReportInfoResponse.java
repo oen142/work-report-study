@@ -22,39 +22,26 @@ import java.util.stream.Collectors;
 public class WorkReportInfoResponse {
 
     private Long id;
-
     private LocalDate workedAt;
-
     private String companyName;
-
     private String workPlaceName;
-
     private String workerName;
-
     private String workerPhoneNumber;
-
     private String workDevice;
-
     private String workDeviceNumber;
 
     private LocalDateTime workStartDateTime;
     private LocalDateTime workEndDateTime;
 
     private Long workPay;
-
     private Long addedPay;
-
     private boolean checked;
-
     private LocalDate payedDate;
-
     private String gasStationName;
-
     private Long gasAmount;
 
 
     private String representativeName;
-
     private String representativePhoneNumber;
     private String representativeCompanyNumber;
     private String representativeFaxNumber;
@@ -63,16 +50,14 @@ public class WorkReportInfoResponse {
     private String dispatcherPhoneNumber;
 
     private AddressResponse workAddress;
-
     private String memo;
 
     private List<String> pictures;
-
     private String signPicture;
 
     public static WorkReportInfoResponse ofNew(WorkReport workReport) {
         return WorkReportInfoResponse.builder()
-                .id(null)
+                .id(workReport.getId())
                 .workedAt(workReport.getWorkedAt())
                 .companyName(workReport.getCompanyName())
                 .workPlaceName(workReport.getWorkPlaceName())
