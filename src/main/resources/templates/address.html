@@ -1,0 +1,117 @@
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #root-container {
+            display: block;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .close-button {
+            cursor: pointer;
+            position: absolute;
+            right: 0px;
+            top: -1px;
+            z-index: 1;
+        }
+
+        .search-result-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            z-index: 0;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .search-result-container iframe {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            border: 0px none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+<div id="root-container">
+    <img
+            src="//t1.daumcdn.net/postcode/resource/images/close.png"
+            id="btnFoldWrap"
+            class="close-button"
+            onclick="foldDaumPostcode()"
+            alt="접기 버튼"
+    />
+
+    <div id="__daum__layer_1" class="search-result-container">
+        <iframe frameborder="0" src="about:blank"></iframe>
+    </div>
+</div>
+
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    // 우편번호 찾기 찾기 화면을 넣을 element
+    let $rootContainer = document.getElementById("root-container");
+    let $closeButton = document.getElementById("btnFoldWrap")
+
+    let currentScroll = Math.max(
+        document.body.scrollTop,
+        document.documentElement.scrollTop
+    );
+
+    const sendAddressToAndroidNative = (zoneCode, address, buildingName) => {
+        window.Android.bridgeToAddress(zoneCode, address, buildingName);
+    };
+
+    const closeScreenToAndroidNative = () => {
+        window.Android.callCloseFunction();
+    }
+
+    $closeButton.addEventListener('click', () => {
+        closeScreenToAndroidNative();
+    })
+
+    new daum.Postcode({
+        oncomplete: (data) => {
+            // 도로명 주소 선택시 or 지번 주소 선택시
+            if (data.userSelectedType == "R") {
+                sendAddressToAndroidNative(
+                    data.zonecode,
+                    data.roadAddress,
+                    data.buildingName
+                );
+            } else {
+                sendAddressToAndroidNative(
+                    data.zonecode,
+                    data.jibunAddress,
+                    data.buildingName
+                );
+            }
+
+            $rootContainer.style.display = "none";
+            document.body.scrollTop = currentScroll;
+        },
+        onresize: (size) => {
+            $rootContainer.style.height = size.height + "px";
+        },
+
+        width: "100%",
+        height: "100%",
+    }).embed($rootContainer);
+
+</script>
+</body>
+<whale-quicksearch translate="no"></whale-quicksearch>
+</html>

@@ -1,5 +1,6 @@
 package biz.dreamaker.workreport.report.dto;
 
+import biz.dreamaker.workreport.report.entity.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,7 @@ public class AddressRequest {
     private String detail;
 
 
+    public Address toAddress() {
+        return Address.of(zipcode , basic , detail);
+    }
 }

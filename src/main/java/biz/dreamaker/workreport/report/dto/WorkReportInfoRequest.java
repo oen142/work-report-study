@@ -1,5 +1,7 @@
 package biz.dreamaker.workreport.report.dto;
 
+import biz.dreamaker.workreport.account.domain.Account;
+import biz.dreamaker.workreport.report.entity.WorkReport;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -64,4 +66,9 @@ public class WorkReportInfoRequest {
     private MultipartFile signFile;
 
 
+    public WorkReport toWorkReport(Account account) {
+        return WorkReport.ofNew(workedAt , companyName , workPlaceName , workerName, workerPhoneNumber , workDevice ,workDeviceNumber ,
+                workStartDateTime , workEndDateTime , workPay , addedPay , checked , payedDate ,gasStationName, gasAmount,
+                representativeName , representativePhoneNumber ,representativeCompanyNumber ,representativeFaxNumber ,dispatcherName,dispatcherPhoneNumber,workAddress.toAddress() , memo , account);
+    }
 }

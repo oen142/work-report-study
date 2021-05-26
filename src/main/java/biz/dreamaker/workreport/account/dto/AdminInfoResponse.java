@@ -14,12 +14,14 @@ public class AdminInfoResponse {
 
     private Long id;
     private String username;
+    private String name;
     private String phoneNumber;
 
     public static AdminInfoResponse from(Account account) {
         return AdminInfoResponse.builder()
                 .id(account.getId())
                 .username(account.getUsername())
+                .name(account.getName())
                 .phoneNumber(account.getPhoneNumber())
                 .build();
     }
