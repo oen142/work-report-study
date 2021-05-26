@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,52 +33,57 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    private String profileHref;
+    private String phoneNumber;
 
     private boolean deleted;
 
     @Builder
     private Account(Long id, String username, String password,
-        UserRole userRole, String profileHref, boolean deleted) {
+                    UserRole userRole, String phoneNumber, boolean deleted) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.userRole = userRole;
-        this.profileHref = profileHref;
+        this.phoneNumber = phoneNumber;
         this.deleted = deleted;
     }
 
-    public static Account ofUser(String username, String password) {
+    public static Account ofUser(String username, String password, String phoneNumber) {
         return Account.builder()
-            .id(null)
-            .username(username)
-            .password(password)
-            .userRole(UserRole.USER)
-            .profileHref("")
-            .deleted(false)
-            .build();
+                .id(null)
+                .username(username)
+                .password(password)
+                .userRole(UserRole.USER)
+                .phoneNumber(phoneNumber)
+                .deleted(false)
+                .build();
     }
 
-    public static Account ofAdmin(String username, String password) {
+    public static Account ofAdmin(String username, String password, String phoneNumber) {
         return Account.builder()
-            .id(null)
-            .username(username)
-            .password(password)
-            .userRole(UserRole.ADMIN)
-            .profileHref("")
-            .deleted(false)
-            .build();
+                .id(null)
+                .username(username)
+                .password(password)
+                .userRole(UserRole.ADMIN)
+                .phoneNumber(phoneNumber)
+                .deleted(false)
+                .build();
     }
 
-    public static Account ofSuper(String username, String password) {
+    public static Account ofSuper(String username, String password, String phoneNumber) {
         return Account.builder()
-            .id(null)
-            .username(username)
-            .password(password)
-            .userRole(UserRole.SUPER)
-            .profileHref("")
-            .deleted(false)
-            .build();
+                .id(null)
+                .username(username)
+                .password(password)
+                .userRole(UserRole.SUPER)
+                .phoneNumber(phoneNumber)
+                .deleted(false)
+                .build();
+    }
+
+    public void update(String username, String phoneNumber) {
+        this.username = username;
+        this.phoneNumber = phoneNumber;
     }
 }
 

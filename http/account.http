@@ -1,0 +1,20 @@
+### OK 개인 권한으로 회원가입을 합니다.
+POST http://localhost:80/enroll/personal
+Content-Type: application/json
+
+{
+  "username": "한장현",
+  "phoneNumber": "010-0000-0000",
+  "password" : "test"
+}
+
+### OK 회원정보를 수정 합니다.
+PUT http://localhost:80/api/account/4
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZXIiLCJVU0VSTkFNRSI6InN1cGVyIiwiVVNFUl9ST0xFIjoiUk9MRV9TVVBFUiJ9.q1FDceDzVVSIF_qclymIIfSqrLQ08u2DrsAsiAEmq7Y
+
+{
+  "username": "김종완",
+  "phoneNumber": "010-1111-1111"
+}
+
