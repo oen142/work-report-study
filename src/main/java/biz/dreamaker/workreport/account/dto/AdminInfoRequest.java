@@ -13,10 +13,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class AdminInfoRequest {
 
     private String username;
+    private String name;
     private String phoneNumber;
     private String password;
 
     public Account toPersonal(PasswordEncoder passwordEncoder) {
-        return Account.ofUser(username, passwordEncoder.encode(password), phoneNumber);
+        return Account.ofUser(username, name, passwordEncoder.encode(password), phoneNumber);
     }
 }

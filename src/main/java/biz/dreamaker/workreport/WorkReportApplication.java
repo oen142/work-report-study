@@ -33,11 +33,11 @@ public class WorkReportApplication {
 
         return args -> {
             Account superAdmin = Account
-                    .ofSuper("super", passwordEncoder.encode("admin"), "010-0000-0000");
+                    .ofSuper("super", "슈퍼유저", passwordEncoder.encode("admin"), "010-0000-0000");
             Account admin = Account
-                    .ofAdmin("admin", passwordEncoder.encode("admin"), "010-0000-0000");
+                    .ofAdmin("admin", "어드민 유저", passwordEncoder.encode("admin"), "010-0000-0000");
             Account admin1 = Account
-                    .ofAdmin("admin1", passwordEncoder.encode("admin"), "010-0000-0000");
+                    .ofAdmin("admin1", "어드민 유저", passwordEncoder.encode("admin"), "010-0000-0000");
 
             accountRepository.save(superAdmin);
             accountRepository.save(admin);

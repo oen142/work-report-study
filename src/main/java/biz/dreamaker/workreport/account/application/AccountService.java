@@ -40,7 +40,7 @@ public class AccountService {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을수 없습니다."));
 
-        account.update(request.getUsername(), request.getPhoneNumber());
+        account.update(request.getName(), request.getPhoneNumber());
         return AdminInfoResponse.from(account);
     }
 }
