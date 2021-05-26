@@ -2,6 +2,7 @@ package biz.dreamaker.workreport.report.dto;
 
 import biz.dreamaker.workreport.report.application.WorkReportService;
 import biz.dreamaker.workreport.report.entity.Address;
+import biz.dreamaker.workreport.report.entity.Picture;
 import biz.dreamaker.workreport.report.entity.WorkReport;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +12,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Embedded;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -63,6 +66,9 @@ public class WorkReportInfoResponse {
 
     private String memo;
 
+    private List<String> pictures;
+
+    private String signPicture;
 
     public static WorkReportInfoResponse ofNew(WorkReport workReport) {
         return WorkReportInfoResponse.builder()
@@ -90,6 +96,10 @@ public class WorkReportInfoResponse {
                 .dispatcherPhoneNumber(workReport.getDispatcherPhoneNumber())
                 .workAddress(AddressResponse.of(workReport.getWorkAddress()))
                 .memo(workReport.getMemo())
+                .pictures(workReport.getPictures().stream()
+                        .map(Picture::getHref)
+                        .collect(Collectors.toList()))
+                .signPicture(workReport.getPicture())
                 .build();
     }
 }

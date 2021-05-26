@@ -4,6 +4,9 @@ import biz.dreamaker.workreport.account.application.AccountService;
 import biz.dreamaker.workreport.account.domain.Account;
 import biz.dreamaker.workreport.account.dto.AdminInfoRequest;
 import biz.dreamaker.workreport.account.dto.AdminInfoResponse;
+import biz.dreamaker.workreport.account.dto.CompanyRequest;
+import biz.dreamaker.workreport.account.dto.CompanyResponse;
+import biz.dreamaker.workreport.security.dto.ParseAuthenticationToAccount;
 import biz.dreamaker.workreport.security.tokens.PostAuthorizationToken;
 
 import java.net.URI;
@@ -30,6 +33,13 @@ public class AccountEnrollController {
         return ResponseEntity.ok().body(responses);
     }
 
+    @GetMapping("/api/account/me/company")
+    public ResponseEntity<CompanyResponse> findAdminMineOfCompany(Authentication authentication) {
+        String username = getLoginAccountUsername(authentication);
+        CompanyResponse responses = accountService.findByUsernameCompany(username);
+        return ResponseEntity.ok().body(responses);
+    }
+
     @PostMapping("/enroll/personal")
     public ResponseEntity<AdminInfoResponse> enrollAdminManagerAccount(
             @RequestBody AdminInfoRequest request) {
@@ -44,6 +54,25 @@ public class AccountEnrollController {
     public ResponseEntity<AdminInfoResponse> updateAdminManagerAccount(
             @PathVariable(name = "id") Long id, @RequestBody AdminInfoRequest request) {
         AdminInfoResponse response = accountService.updateAccount(id, request);
+
+        return ResponseEntity.ok()
+                .body(response);
+    }
+    @PutMapping("/api/account/company/personal")
+    public ResponseEntity<AdminInfoResponse> updateAdminManagerAccountPersonal(
+       Authentication authentication, @RequestBody CompanyRequest request) {
+        String username = ParseAuthenticationToAccount.getLoginAccountUsername(authentication);
+        AdminInfoResponse response = accountService.updateAccountForCompanyOfPersonal(username, request);
+
+        return ResponseEntity.ok()
+                .body(response);
+    }
+    @PutMapping("/api/account/company/group")
+    public ResponseEntity<AdminInfoResponse> updateAdminManagerAccountGroup(
+            Authentication authentication ,
+   @RequestBody CompanyRequest request) {
+        String username = ParseAuthenticationToAccount.getLoginAccountUsername(authentication);
+        AdminInfoResponse response = accountService.updateAccountForCompanyOfGroup(username, request);
 
         return ResponseEntity.ok()
                 .body(response);

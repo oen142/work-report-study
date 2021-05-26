@@ -3,7 +3,8 @@ POST http://localhost:80/enroll/personal
 Content-Type: application/json
 
 {
-  "username": "한장현",
+  "username": "admin3",
+  "name" : "한장현",
   "phoneNumber": "010-0000-0000",
   "password" : "test"
 }
@@ -11,10 +12,61 @@ Content-Type: application/json
 ### OK 회원정보를 수정 합니다.
 PUT http://localhost:80/api/account/4
 Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZXIiLCJVU0VSTkFNRSI6InN1cGVyIiwiVVNFUl9ST0xFIjoiUk9MRV9TVVBFUiJ9.q1FDceDzVVSIF_qclymIIfSqrLQ08u2DrsAsiAEmq7Y
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZXIiLCJVU0VSTkFNRSI6ImFkbWluIiwiVVNFUl9ST0xFIjoiUk9MRV9DT01QQU5ZIn0.rVZPdzT9lT94hy6nGqgJwuV_x5ItoUn4m3upjDE-GVU
 
 {
-  "username": "김종완",
+  "name": "김종완",
   "phoneNumber": "010-1111-1111"
+}
+### OK 회원정보를 가져옵니다..
+GET http://localhost:80/api/account/me
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZXIiLCJVU0VSTkFNRSI6ImFkbWluIiwiVVNFUl9ST0xFIjoiUk9MRV9DT01QQU5ZIn0.rVZPdzT9lT94hy6nGqgJwuV_x5ItoUn4m3upjDE-GVU
+
+### OK 회사 회원정보를 가져옵니다..
+GET http://localhost:80/api/account/me/company
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZXIiLCJVU0VSTkFNRSI6ImFkbWluIiwiVVNFUl9ST0xFIjoiUk9MRV9DT01QQU5ZIn0.rVZPdzT9lT94hy6nGqgJwuV_x5ItoUn4m3upjDE-GVU
+
+
+### OK 회원정보를 수정 합니다. 개인 사업자로
+PUT http://localhost:80/api/account/company/personal
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZXIiLCJVU0VSTkFNRSI6ImFkbWluIiwiVVNFUl9ST0xFIjoiUk9MRV9DT01QQU5ZIn0.rVZPdzT9lT94hy6nGqgJwuV_x5ItoUn4m3upjDE-GVU
+
+{
+  "companyNumber" : "00000-1111",
+  "bossName" : "보스보스",
+  "address" : {
+      "zipcode": "20202",
+    "detail" : "teerqwr",
+    "basic" : "tttt"
+  },
+  "openDate" : "2020-01-01",
+  "companyBusiness" : "업종",
+  "email" : "oen142@naver.com",
+  "phoneNumber" : "010-0000-0000",
+  "faxNumber" : "010-000"
+}
+
+
+### OK 회원정보를 수정 합니다. 법인사업자로
+PUT http://localhost:80/api/account/company/group
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZXIiLCJVU0VSTkFNRSI6ImFkbWluIiwiVVNFUl9ST0xFIjoiUk9MRV9DT01QQU5ZIn0.rVZPdzT9lT94hy6nGqgJwuV_x5ItoUn4m3upjDE-GVU
+
+{
+  "companyNumber" : "00000-1111",
+  "bossName" : "보스보스",
+  "address" : {
+    "zipcode": "20202",
+    "detail" : "teerqwr",
+    "basic" : "tttt"
+  },
+  "openDate" : "2020-01-01",
+  "companyBusiness" : "업종",
+  "email" : "oen142@naver.com",
+  "phoneNumber" : "010-0000-0000",
+  "faxNumber" : "010-000"
 }
 

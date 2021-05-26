@@ -58,7 +58,7 @@ public class Account extends BasicEntity {
                 .username(username)
                 .name(name)
                 .password(password)
-                .userRole(UserRole.USER)
+                .userRole(UserRole.PERSONAL)
                 .phoneNumber(phoneNumber)
                 .deleted(false)
                 .build();
@@ -70,7 +70,7 @@ public class Account extends BasicEntity {
                 .username(username)
                 .name(name)
                 .password(password)
-                .userRole(UserRole.ADMIN)
+                .userRole(UserRole.COMPANY)
                 .phoneNumber(phoneNumber)
                 .deleted(false)
                 .build();
@@ -82,7 +82,7 @@ public class Account extends BasicEntity {
                 .username(username)
                 .name(name)
                 .password(password)
-                .userRole(UserRole.SUPER)
+                .userRole(UserRole.PERSONAL)
                 .phoneNumber(phoneNumber)
                 .deleted(false)
                 .build();
@@ -91,6 +91,10 @@ public class Account extends BasicEntity {
     public void update(String name, String phoneNumber) {
         this.name = name;
         this.phoneNumber = phoneNumber;
+    }
+
+    public void updateCompany() {
+        this.userRole = UserRole.COMPANY;
     }
 }
 

@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -68,8 +70,14 @@ public class WorkReport extends BasicEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Account account;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Picture> pictures = new ArrayList<>();
+
+    private String picture;
+
     @Builder(access = AccessLevel.PRIVATE)
-    private WorkReport(Long id, LocalDate workedAt, String companyName, String workPlaceName, String workerName, String workerPhoneNumber, String workDevice, String workDeviceNumber, LocalDateTime workStartDateTime, LocalDateTime workEndDateTime, Long workPay, Long addedPay, boolean checked, LocalDate payedDate, String gasStationName, Long gasAmount, String representativeName, String representativePhoneNumber, String representativeCompanyNumber, String representativeFaxNumber, String dispatcherName, String dispatcherPhoneNumber, Address workAddress, String memo, Account account) {
+    private WorkReport(Long id, LocalDate workedAt, String companyName, String workPlaceName, String workerName, String workerPhoneNumber, String workDevice, String workDeviceNumber, LocalDateTime workStartDateTime, LocalDateTime workEndDateTime, Long workPay, Long addedPay, boolean checked, LocalDate payedDate, String gasStationName, Long gasAmount, String representativeName, String representativePhoneNumber, String representativeCompanyNumber, String representativeFaxNumber, String dispatcherName, String dispatcherPhoneNumber, Address workAddress, String memo, Account account
+            , List<Picture> pictures, String picture) {
         this.id = id;
         this.workedAt = workedAt;
         this.companyName = companyName;
@@ -95,6 +103,8 @@ public class WorkReport extends BasicEntity {
         this.workAddress = workAddress;
         this.memo = memo;
         this.account = account;
+        this.pictures.addAll(pictures);
+        this.picture = picture;
     }
 
     public static WorkReport ofNew(LocalDate workedAt, String companyName, String workPlaceName, String workerName,
@@ -103,7 +113,7 @@ public class WorkReport extends BasicEntity {
                                    Long addedPay, boolean checked, LocalDate payedDate, String gasStationName,
                                    Long gasAmount, String representativeName, String representativePhoneNumber,
                                    String representativeCompanyNumber, String representativeFaxNumber, String dispatcherName,
-                                   String dispatcherPhoneNumber, Address workAddress, String memo, Account account) {
+                                   String dispatcherPhoneNumber, Address workAddress, String memo, Account account, List<Picture> pictures) {
         return WorkReport.builder()
                 .id(null)
                 .workedAt(workedAt)
@@ -130,7 +140,14 @@ public class WorkReport extends BasicEntity {
                 .workAddress(workAddress)
                 .memo(memo)
                 .account(account)
+                .pictures(pictures)
+                .picture(null)
                 .build();
+    }
+
+    public void sign(String file) {
+        this.checked = true;
+        this.picture = file;
     }
 }
 
