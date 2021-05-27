@@ -30,16 +30,16 @@ spring:
         format_sql: true
     open-in-view: false
   datasource:
-    url: jdbc:mysql://localhost:20002/workreport
+    url: jdbc:mysql://localhost:3306/workreport
     username: root
-    password: password
+    password: Kho0923!!
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 jwt:
   sign-key: springtestsignkey
 
 server:
-  port: 81
+  port: 80
 attactment:
   invoice: path_to_file
 logging:
