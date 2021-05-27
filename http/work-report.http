@@ -40,6 +40,7 @@ Content-Type: multipart/form-data
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZXIiLCJVU0VSTkFNRSI6ImFkbWluIiwiVVNFUl9ST0xFIjoiUk9MRV9DT01QQU5ZIn0.rVZPdzT9lT94hy6nGqgJwuV_x5ItoUn4m3upjDE-GVU
 
 {
-  "file" : 싸인파일
+  "file" : "싸인파일",
+  "email" : "oen142@naver.com"
 }
 

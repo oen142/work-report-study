@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta charset="UTF-8"/>
+    <meta content="IE=Edge,chrome=1" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
+          name="viewport"/>
+    <title>작업일보</title>
+    <style>
+        * {
+            padding: 0;
+            list-style: none;
+            border: none;
+            outline: none;
+        }
+
+        hr {
+            height: 1px;
+            border: 1px solid #e4e4e5;
+        }
+
+        h3, .h3 {
+            color: #36393f;
+        }
+
+        h4, .h4 {
+            color: #9e9e9e;
+        }
+
+        h5, .h5 {
+            color: #9e9e9e;
+        }
+
+        body {
+            background-color: white;
+        }
+
+        body main {
+            margin: 50px 100px;
+        }
+
+        body main .content .list {
+            margin: 30px;
+        }
+
+        body main .content .title {
+            font-weight: bold;
+            color: #4f5156;
+        }
+
+        body main .content .li-title {
+            color: #b3b4b6;
+            width: 30%;
+        }
+
+        body main .content .li-content {
+            font-size: 20px;
+            color: #585a5f;
+        }
+
+        body main .content .grid {
+            grid-template-columns: 1fr 300px;
+        }
+
+        .mt-10 {
+            margin-top: 10px;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mt-100 {
+            margin-top: 100px;
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flex-left {
+        }
+
+        .flex-jb {
+        }
+
+        h1, .h1 {
+            font-size: 40px;
+        }
+
+        h2, .h2 {
+            font-size: 35px;
+        }
+
+        h3, .h3 {
+            font-size: 30px;
+        }
+
+        h4, .h4 {
+            font-size: 20px;
+        }
+
+        h5, .h5 {
+            font-size: 15px;
+        }
+
+        h6, .h6 {
+            font-size: 10px;
+        }
+
+        p, .p {
+            font-size: 12px;
+        }
+
+        span, .span {
+            font-size: 15px;
+        }
+
+        h1, h2, h3, h4, h5, h6, p {
+            line-height: 1.4;
+        }
+
+        /*# sourceMappingURL=style.css.map */
+    </style>
+</head>
+<body>
+<main>
+    <section class="dashboard">
+        <article class=" flex-jb">
+            <div>
+                <h1 class="title h1">작업일보 보고서</h1>
+                <h5 class="mt-10">작업일보 앱에서 전송한
+                    <span class="h5" th:text="${companyName}">${companyName}</span>
+                    &nbsp;-&nbsp;
+                    <span class="h5" th:text="${workPlaceName}">${workPlaceName}</span>
+                    작업 내역입니다.
+                </h5>
+            </div>
+            <div>
+                <img src="../static/image/logo_transparent.png" alt="로고" width="100"/>
+            </div>
+        </article>
+        <hr/>
+        <div class="content">
+            <ul class="list">
+                <li class="list-item flex-left">
+                    <p class="li-title h4">회사명</p>
+                    <p class="li-content" th:text="${companyName}">${companyName}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">현장명</p>
+                    <p class="li-content" th:text="${workPlaceName}">${workPlaceName}</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <section class="worker mt-100">
+        <article class=" flex-jb">
+            <div>
+                <h3 class="title">작업자 정보</h3>
+            </div>
+            <div class="flex">
+                <img src="../static/image/logo_transparent.png" alt="로고" width="60"/>
+            </div>
+        </article>
+        <hr/>
+        <div class="content">
+            <ul class="list">
+                <li class="list-item flex-left">
+                    <p class="li-title h4">작업자명</p>
+                    <p class="li-content" th:text="${workerName}">${workerName}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">작업자 전화번호</p>
+                    <p class="li-content" th:text="${workerPhoneNumber}">${workerPhoneNumber}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">기종</p>
+                    <p class="li-content" th:text="${workDevice}">${workDevice}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">기종 등록번호</p>
+                    <p class="li-content" th:text="${workDeviceNumber}">${workDeviceNumber}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">작업 시작 날짜</p>
+                    <p class="li-content" th:text="${workStartDateTime}">${workStartDateTime}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">작업 종료 날짜</p>
+                    <p class="li-content" th:text="${workEndDateTime}">${workEndDateTime}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">작업비용</p>
+                    <p class="li-content" th:text="${workPay}">${workPay}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">추가금액</p>
+                    <p class="li-content" th:text="${workAddedPay}">${workAddedPay}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">결제확인</p>
+                    <p class="li-content" th:text="${payedStatus}">${payedStatus}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">결제일</p>
+                    <p class="li-content" th:text="${payedDate}">${payedDate}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">주유소명</p>
+                    <p class="li-content" th:text="${gasStationName}">${gasStationName}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">주유 리터</p>
+                    <p class="li-content" th:text="${gasAmount}">${gasAmount}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">리터 당 금액</p>
+                    <p class="li-content" th:text="${gasPrice}">${gasPrice}</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <section class="admin mt-100">
+        <article class=" flex-jb">
+            <div>
+                <h3 class="title">담당자 정보</h3>
+            </div>
+            <div class="flex">
+                <img src="../static/image/logo_transparent.png" alt="로고" width="60"/>
+            </div>
+        </article>
+        <hr/>
+        <div class="content">
+            <ul class="list">
+                <li class="list-item flex-left">
+                    <p class="li-title h4">담당자명</p>
+                    <p class="li-content" th:text="${representativeName}">${representativeName}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">담당자 전화번호</p>
+                    <p class="li-content" th:text="${representativePhoneNumber}">${representativePhoneNumber}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">담당자 회사번호</p>
+                    <p class="li-content" th:text="${representativeCompanyNumber}">${representativeCompanyNumber}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">담당자 팩스</p>
+                    <p class="li-content" th:text="${representativeFaxNumber}">${representativeFaxNumber}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">배차자 이름</p>
+                    <p class="li-content" th:text="${dispatcherName}">${dispatcherName}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">배차자 전화번호</p>
+                    <p class="li-content" th:text="${dispatcherPhoneNumber}">${dispatcherPhoneNumber}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">작업 주소</p>
+                    <p class="li-content" th:text="${workAddress}">${workAddress}</p>
+                </li>
+                <li class="list-item flex-left mt-20">
+                    <p class="li-title h4">메모</p>
+                    <p class="li-content" th:text="${memo}">${memo}</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <section class="sign mt-100">
+        <article class=" flex-jb">
+            <div>
+                <h3 class="title">담당자 서명 정보</h3>
+            </div>
+            <div class="flex">
+                <img src="../static/image/logo_transparent.png" alt="로고" width="60"/>
+            </div>
+        </article>
+        <hr/>
+        <div class="content">
+            <img th:src="@{${signImage}}" alt="서명 이미지"/>
+        </div>
+    </section>
+</main>
+</body>
+</html>

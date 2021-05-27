@@ -1,10 +1,6 @@
 package biz.dreamaker.workreport.pdf.application;
 
 import biz.dreamaker.workreport.pdf.exception.PdfIOException;
-import com.lowagie.text.*;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.FontSelector;
-import com.lowagie.text.pdf.PdfWriter;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -22,40 +18,7 @@ public class PdfServiceImpl implements PdfService {
 
     @Override
     public String generatePdf(String contents, String... imageUrls) throws IOException {
-        Document document = new Document();
-        String pdfName = UUID.randomUUID() + ".pdf";
-        OutputStream outputStream = new FileOutputStream(
-                "./pdf/" + pdfName);
-        try {
-            PdfWriter instance = PdfWriter
-                    .getInstance(document, outputStream);
-            document.open();
-            ClassPathResource resource = new ClassPathResource("/static/font/NanumBarunGothic.ttf");
-
-
-            Font font24B = FontFactory.getFont(resource.getURL().toString(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 24);
-            Font font12B = FontFactory.getFont(resource.getURL().toString(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12);
-            FontSelector sel = new FontSelector();
-            sel.addFont(new Font(Font.TIMES_ROMAN, 12));
-            sel.addFont(new Font(Font.ZAPFDINGBATS, 12));
-            sel.addFont(new Font(Font.SYMBOL, 12));
-            Phrase ph = sel.process(contents);
-            document.add(new Paragraph("작업일보입니다.\n\n\n", font24B));
-
-            document.add(new Paragraph(contents, font12B));
-
-            for (String imageUrl : imageUrls) {
-                Image jpg = Image.getInstance(imageUrl);
-                document.add(jpg);
-            }
-
-        } catch (DocumentException | IOException de) {
-            System.err.println(de.getMessage());
-        } finally {
-            document.close();
-            outputStream.close();
-            return pdfName;
-        }
+       return null;
 
     }
 

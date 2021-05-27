@@ -39,11 +39,18 @@ dependencies {
 
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
-    //open pdf
+/*    //open pdf
     implementation group: 'com.github.librepdf', name: 'openpdf', version: '1.3.26'
 // https://mvnrepository.com/artifact/com.github.librepdf/openpdf-fonts-extra
     implementation group: 'com.github.librepdf', name: 'openpdf-fonts-extra', version: '1.3.26'
     implementation("org.xhtmlrenderer:flying-saucer-pdf:9.1.20")
+// https://mvnrepository.com/artifact/com.aspose/aspose-pdf
+    implementation group: 'com.aspose', name: 'aspose-pdf', version: '9.5.0'*/
+
+    // https://mvnrepository.com/artifact/com.itextpdf/itext7-core
+    implementation group: 'com.itextpdf', name: 'itext7-core', version: '7.1.9', ext: 'pom'
+// https://mvnrepository.com/artifact/com.itextpdf/html2pdf
+    implementation group: 'com.itextpdf', name: 'html2pdf', version: '3.0.4'
 
     // handlebars
     implementation 'pl.allegro.tech.boot:handlebars-spring-boot-starter:0.3.0'

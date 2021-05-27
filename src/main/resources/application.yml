@@ -47,6 +47,6 @@ logging:
     path: log
   logback:
     rollingpolicy:
-      max-file-size: 1KB
+      max-file-size: 10MB
       max-history: 7
       file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.log

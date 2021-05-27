@@ -3,19 +3,21 @@ package biz.dreamaker.workreport.report.application;
 import biz.dreamaker.workreport.account.domain.Account;
 import biz.dreamaker.workreport.account.repository.AccountRepository;
 import biz.dreamaker.workreport.email.application.EmailService;
+import biz.dreamaker.workreport.pdf.application.PdfGenerator;
 import biz.dreamaker.workreport.pdf.application.PdfService;
+import biz.dreamaker.workreport.pdf.application.ThymeleafParser;
 import biz.dreamaker.workreport.report.dto.WorkReportInfoRequest;
 import biz.dreamaker.workreport.report.dto.WorkReportInfoResponse;
 import biz.dreamaker.workreport.report.entity.Picture;
 import biz.dreamaker.workreport.report.entity.WorkReport;
 import biz.dreamaker.workreport.report.repository.WorkReportRepository;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,19 +50,54 @@ public class WorkReportService {
 
     }
 
+    @Async
     public WorkReportInfoResponse signWorkReport(Long id, String file, String dispatcherEmail) throws IOException {
         WorkReport workReport = workReportRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("해당 유저네임을 가진 아이디를 찾을 수 없습니다."));
 
+        if (workReport.isChecked()) {
+            throw new IllegalArgumentException("해당 문서는 이미 사인되었습니다.");
+        }
+        String pdfName = sendPdf(workReport, file);
+        workReport.sign(file, dispatcherEmail, pdfName);
 
-        String pdfLocation = pdfService.generatePdf(generateMessage(workReport), file);
-
-        workReport.sign(file, dispatcherEmail, pdfLocation);
-
-        emailService.sendSimpleMessageUsingTemplate(workReport.getDispatcherEmail(), LocalDate.now() + "날짜 작업일보입니다.",
-                workReport.getDispatcherName(), workReport.getWorkerName(), workReport.getWorkedAt() + "");
+        emailService.sendSimpleMessageUsingTemplate(workReport.getDispatcherEmail(), workReport.getWorkerName() + "님의 " + LocalDate.now() + " 작업일보입니다.",
+                workReport.getDispatcherName(), workReport.getWorkerName(), workReport.getWorkedAt() + "", pdfName);
 
         return WorkReportInfoResponse.ofNew(workReport);
+    }
+
+    private String sendPdf(WorkReport workReport, String imageUrl) throws IOException {
+        Map<String, Object> name = new HashMap<>();
+        name.put("companyName", workReport.getCompanyName());
+        name.put("workPlaceName", workReport.getWorkPlaceName());
+        name.put("workerName", workReport.getWorkerName());
+        name.put("workerPhoneNumber", workReport.getWorkerPhoneNumber());
+        name.put("workDevice", workReport.getWorkDevice());
+        name.put("workDeviceNumber", workReport.getWorkDeviceNumber());
+        name.put("workStartDateTime", workReport.getWorkStartDateTime());
+        name.put("workEndDateTime", workReport.getWorkEndDateTime());
+        name.put("workPay", workReport.getWorkPay());
+        name.put("workAddedPay", workReport.getAddedPay());
+        name.put("payedStatus", workReport.isPayedStatus() ? "지급됨" : "미지급");
+        name.put("payedDate", workReport.getPayedDate());
+        name.put("gasStationName", workReport.getGasStationName());
+        name.put("gasAmount", workReport.getGasAmount());
+        name.put("gasPrice", workReport.getGasPrice());
+        name.put("representativeName", workReport.getRepresentativeName());
+        name.put("representativePhoneNumber", workReport.getRepresentativePhoneNumber());
+        name.put("representativeCompanyNumber", workReport.getRepresentativeCompanyNumber());
+        name.put("representativeFaxNumber", workReport.getRepresentativeFaxNumber());
+        name.put("dispatcherName", workReport.getDispatcherName());
+        name.put("dispatcherPhoneNumber", workReport.getDispatcherPhoneNumber());
+        name.put("workAddress", workReport.getWorkAddress().toStringAddress());
+        name.put("memo", workReport.getMemo());
+        name.put("signImage", imageUrl);
+
+        String html = ThymeleafParser.parseHtmlFileToString("work", name);
+        String pdfName = UUID.randomUUID() + ".pdf";
+        PdfGenerator.generateFromHtml("./pdf/", pdfName, html, imageUrl);
+        return pdfName;
     }
 
     private String generateMessage(WorkReport workReport) {
@@ -133,7 +170,7 @@ public class WorkReportService {
     public List<WorkReportInfoResponse> findAllByAccountId(Long accountId) {
         List<WorkReport> workReports = workReportRepository.findAllByAccountId(accountId);
         return workReports.stream()
-                .map(w -> WorkReportInfoResponse.ofNew(w))
+                .map(WorkReportInfoResponse::ofNew)
                 .collect(Collectors.toList());
     }
 
@@ -148,7 +185,7 @@ public class WorkReportService {
 
 
         List<Picture> pictures = uploadedFiles.stream()
-                .map(file -> Picture.ofNew(file))
+                .map(Picture::ofNew)
                 .collect(Collectors.toList());
         workReport.update(request.getWorkedAt(),
                 request.getCompanyName(),

@@ -1,6 +1,7 @@
 package biz.dreamaker.workreport.email.configuration;
 
 import java.util.Properties;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,9 +52,9 @@ public class EmailConfiguration {
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setText("안녕하세요, %s 님.\n"
-            + "%s님의 %s 작업 일지 내용입니다.\n"
-            + "자세한 사항은 첨부된 파일을 확인해 주세요.\n"
-            + "감사합니다.");
+                + "%s님의 %s 작업 일지 내용입니다.\n"
+                + "http://kho1924.cafe24.com/filess/%s 로 이동하셔서 pdf를 확인해주시기 바랍니다.\n"
+                + "감사합니다.");
         return message;
     }
 
