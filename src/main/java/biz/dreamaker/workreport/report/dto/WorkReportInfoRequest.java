@@ -39,6 +39,8 @@ public class WorkReportInfoRequest {
 
     private String gasStationName;
     private Long gasAmount;
+    private Long gasPrice;
+
 
     private String representativeName;
     private String representativePhoneNumber;
@@ -54,7 +56,7 @@ public class WorkReportInfoRequest {
 
     public WorkReport toWorkReport(Account account, List<Picture> pictures) {
         return WorkReport.ofNew(workedAt, companyName, workPlaceName, workerName, workerPhoneNumber, workDevice, workDeviceNumber,
-                workStartDateTime, workEndDateTime, workPay, addedPay, payedDate, payedStatus, gasStationName, gasAmount,
+                workStartDateTime, workEndDateTime, workPay, addedPay, payedDate, payedStatus, gasStationName, gasAmount, gasPrice,
                 representativeName, representativePhoneNumber, representativeCompanyNumber, representativeFaxNumber, dispatcherName, dispatcherPhoneNumber, workAddress.toAddress(), memo, account, pictures);
     }
 }

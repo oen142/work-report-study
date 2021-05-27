@@ -21,6 +21,7 @@ public class Company {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Account account;
+
     @Enumerated(EnumType.STRING)
     private CompanyRole companyRole;
 

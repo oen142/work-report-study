@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ public class WorkReportController {
             @PathVariable Long id,
             @RequestParam MultipartFile file,
             @RequestParam String email
-    ) {
+    ) throws IOException {
         String storeHref = storageService.store(file);
         Path path = storageService.load(storeHref);
 

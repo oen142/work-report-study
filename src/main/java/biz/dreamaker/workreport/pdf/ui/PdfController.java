@@ -43,21 +43,17 @@ public class PdfController {
 
     @PostMapping("/api/pdf")
     public ResponseEntity<String> createMail(
-            @RequestParam("file") List<MultipartFile> files
+            @RequestParam("file") MultipartFile file
     ) throws IOException {
-        List<String> uploadedFiles = new ArrayList<>();
-        files.forEach(f -> {
-            String storeHref = storageService.store(f);
-            Path path = storageService.load(storeHref);
+        String storeHref = storageService.store(file);
+        Path path = storageService.load(storeHref);
 
-            uploadedFiles.add(MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
-                    "serveFile", path.getFileName().toString())
-                    .build()
-                    .toUri()
-                    .toString());
-        });
-        System.out.println("uploadedFiles = " + uploadedFiles.get(0));
-        pdfService.generatePdf( "콘텐츠입니다.", uploadedFiles.get(0));
+        String serveFile = MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
+                "serveFile", path.getFileName().toString())
+                .build()
+                .toUri()
+                .toString();
+        pdfService.generatePdf("콘텐츠입니다.", serveFile);
 
         return ResponseEntity.ok().body("success");
     }

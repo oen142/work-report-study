@@ -8,6 +8,6 @@ import java.io.IOException;
 
 public interface PdfService {
 
-    void generatePdf(String contents, String... imageUrls) throws IOException;
+    String generatePdf(String contents, String... imageUrls) throws IOException;
 
 }

@@ -25,4 +25,8 @@ public class Address {
                 .detail(detail)
                 .build();
     }
+
+    public String toStringAddress() {
+        return basic + detail;
+    }
 }

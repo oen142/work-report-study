@@ -37,9 +37,10 @@ public class WorkReportInfoResponse {
     private Long addedPay;
     private boolean checked;
     private LocalDate payedDate;
+    private boolean payedStatus;
     private String gasStationName;
     private Long gasAmount;
-
+    private Long gasPrice;
 
     private String representativeName;
     private String representativePhoneNumber;
@@ -71,8 +72,10 @@ public class WorkReportInfoResponse {
                 .addedPay(workReport.getAddedPay())
                 .checked(workReport.isChecked())
                 .payedDate(workReport.getPayedDate())
+                .payedStatus(workReport.isPayedStatus())
                 .gasStationName(workReport.getGasStationName())
                 .gasAmount(workReport.getGasAmount())
+                .gasPrice(workReport.getGasPrice())
                 .representativeName(workReport.getRepresentativeName())
                 .representativePhoneNumber(workReport.getRepresentativePhoneNumber())
                 .representativeCompanyNumber(workReport.getRepresentativeCompanyNumber())

@@ -21,37 +21,40 @@ import org.springframework.stereotype.Service;
 public class PdfServiceImpl implements PdfService {
 
     @Override
-    public void generatePdf(String contents, String... imageUrls) throws IOException {
+    public String generatePdf(String contents, String... imageUrls) throws IOException {
         Document document = new Document();
+        String pdfName = UUID.randomUUID() + ".pdf";
         OutputStream outputStream = new FileOutputStream(
-                "./pdf/" + UUID.randomUUID() + ".pdf");
+                "./pdf/" + pdfName);
         try {
             PdfWriter instance = PdfWriter
                     .getInstance(document, outputStream);
             document.open();
             ClassPathResource resource = new ClassPathResource("/static/font/NanumBarunGothic.ttf");
-            Font nanumBarunGothic = FontFactory.getFont(resource.getURL().toString(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12);
+
+
+            Font font24B = FontFactory.getFont(resource.getURL().toString(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 24);
+            Font font12B = FontFactory.getFont(resource.getURL().toString(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12);
             FontSelector sel = new FontSelector();
             sel.addFont(new Font(Font.TIMES_ROMAN, 12));
             sel.addFont(new Font(Font.ZAPFDINGBATS, 12));
             sel.addFont(new Font(Font.SYMBOL, 12));
             Phrase ph = sel.process(contents);
-            Font font24B = FontFactory.getFont(FontFactory.TIMES_ROMAN, 24, Font.BOLD);
-            Font font10B = FontFactory.getFont(FontFactory.TIMES_ROMAN, 10, Font.BOLD);
-            document.add(new Paragraph("테스트입니다.test", nanumBarunGothic));
-            document.add(new Paragraph(contents));
+            document.add(new Paragraph("작업일보입니다.\n\n\n", font24B));
+
+            document.add(new Paragraph(contents, font12B));
 
             for (String imageUrl : imageUrls) {
                 Image jpg = Image.getInstance(imageUrl);
                 document.add(jpg);
             }
 
-
         } catch (DocumentException | IOException de) {
             System.err.println(de.getMessage());
         } finally {
             document.close();
             outputStream.close();
+            return pdfName;
         }
 
     }

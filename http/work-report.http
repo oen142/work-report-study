@@ -5,7 +5,7 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZ
 
 {
   "workedAt" : "2020-02-02",
-  "comanyName" : "회사이름",
+  "companyName" : "회사이름",
   "workPlaceName" : "작업장 이름",
   "workerName" : "작업자이름",
   "workerPhoneNumber" : "작업자 핸드폰번호",

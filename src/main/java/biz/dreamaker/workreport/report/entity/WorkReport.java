@@ -52,6 +52,7 @@ public class WorkReport extends BasicEntity {
     private String gasStationName;
 
     private Long gasAmount;
+    private Long gasPrice;
 
 
     private String representativeName;
@@ -78,9 +79,15 @@ public class WorkReport extends BasicEntity {
 
     private String picture;
 
+    private String pdfLocation;
+
     @Builder(access = AccessLevel.PRIVATE)
-    private WorkReport(Long id, LocalDate workedAt, String companyName, String workPlaceName, String workerName, String workerPhoneNumber, String workDevice, String workDeviceNumber, LocalDateTime workStartDateTime,
-                       LocalDateTime workEndDateTime, Long workPay, Long addedPay, boolean checked, boolean payedStatus, LocalDate payedDate, String gasStationName, Long gasAmount, String representativeName, String representativePhoneNumber, String representativeCompanyNumber, String representativeFaxNumber, String dispatcherName, String dispatcherPhoneNumber, Address workAddress, String memo, Account account
+    private WorkReport(Long id, LocalDate workedAt, String companyName, String workPlaceName, String workerName, String workerPhoneNumber, String workDevice,
+                       String workDeviceNumber, LocalDateTime workStartDateTime,
+                       LocalDateTime workEndDateTime, Long workPay, Long addedPay, boolean checked, boolean payedStatus, LocalDate payedDate,
+                       String gasStationName, Long gasAmount, Long gasPrice,
+                       String representativeName, String representativePhoneNumber, String representativeCompanyNumber,
+                       String representativeFaxNumber, String dispatcherName, String dispatcherPhoneNumber, Address workAddress, String memo, Account account
             , List<Picture> pictures, String picture, String dispatcherEmail) {
         this.id = id;
         this.workedAt = workedAt;
@@ -99,6 +106,7 @@ public class WorkReport extends BasicEntity {
         this.payedDate = payedDate;
         this.gasStationName = gasStationName;
         this.gasAmount = gasAmount;
+        this.gasPrice = gasPrice;
         this.representativeName = representativeName;
         this.representativePhoneNumber = representativePhoneNumber;
         this.representativeCompanyNumber = representativeCompanyNumber;
@@ -117,7 +125,7 @@ public class WorkReport extends BasicEntity {
                                    String workerPhoneNumber, String workDevice, String workDeviceNumber,
                                    LocalDateTime workStartDateTime, LocalDateTime workEndDateTime, Long workPay,
                                    Long addedPay, LocalDate payedDate, boolean payedStatus, String gasStationName,
-                                   Long gasAmount, String representativeName, String representativePhoneNumber,
+                                   Long gasAmount, Long gasPrice, String representativeName, String representativePhoneNumber,
                                    String representativeCompanyNumber, String representativeFaxNumber, String dispatcherName,
                                    String dispatcherPhoneNumber, Address workAddress, String memo, Account account, List<Picture> pictures) {
         return WorkReport.builder()
@@ -138,6 +146,7 @@ public class WorkReport extends BasicEntity {
                 .payedDate(payedDate)
                 .gasStationName(gasStationName)
                 .gasAmount(gasAmount)
+                .gasPrice(gasPrice)
                 .representativeName(representativeName)
                 .representativePhoneNumber(representativePhoneNumber)
                 .representativeCompanyNumber(representativeCompanyNumber)
@@ -153,10 +162,11 @@ public class WorkReport extends BasicEntity {
                 .build();
     }
 
-    public void sign(String file, String dispatcherEmail) {
+    public void sign(String file, String dispatcherEmail, String pdfLocation) {
         this.checked = true;
         this.picture = file;
         this.dispatcherEmail = dispatcherEmail;
+        this.pdfLocation = pdfLocation;
     }
 }
 
