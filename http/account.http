@@ -70,3 +70,23 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZ
   "faxNumber" : "010-000"
 }
 
+### OK 비밀번호를 찾습니다.
+PUT http://localhost:80/find-password
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZXIiLCJVU0VSTkFNRSI6ImFkbWluIiwiVVNFUl9ST0xFIjoiUk9MRV9DT01QQU5ZIn0.rVZPdzT9lT94hy6nGqgJwuV_x5ItoUn4m3upjDE-GVU
+
+{
+  "username" : "username",
+  "name": "김종완",
+  "phoneNumber": "010-1111-1111"
+}
+
+### OK 비밀번호를 수정합니다.
+PUT http://localhost:80/api/account/password
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkcmVhbWFrZXIiLCJVU0VSTkFNRSI6ImFkbWluIiwiVVNFUl9ST0xFIjoiUk9MRV9DT01QQU5ZIn0.rVZPdzT9lT94hy6nGqgJwuV_x5ItoUn4m3upjDE-GVU
+
+{
+  "prePassword": "이전 비밀번호",
+  "newPassword": "password"
+}

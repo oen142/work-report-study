@@ -54,7 +54,7 @@ public class WorkReportController {
 
         List<String> uploadedFiles = new ArrayList<>();
 
-        if (!request.getFiles().isEmpty()) {
+        if (request.getFiles() != null) {
             request.getFiles().forEach(f -> {
                 String storeHref = storageService.store(f);
                 Path path = storageService.load(storeHref);
@@ -78,7 +78,7 @@ public class WorkReportController {
             @PathVariable Long id
     ) {
         List<String> uploadedFiles = new ArrayList<>();
-        if (!request.getFiles().isEmpty()) {
+        if (request.getFiles() != null) {
             request.getFiles().forEach(f -> {
                 String storeHref = storageService.store(f);
                 Path path = storageService.load(storeHref);

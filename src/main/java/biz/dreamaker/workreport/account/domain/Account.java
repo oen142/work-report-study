@@ -10,11 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import biz.dreamaker.workreport.account.dto.PasswordResponse;
 import biz.dreamaker.workreport.common.domain.BasicEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter
@@ -95,6 +97,29 @@ public class Account extends BasicEntity {
 
     public void updateCompany() {
         this.userRole = UserRole.COMPANY;
+    }
+
+    public void isCorrect(String username, String name, String phoneNumber) {
+        if (!this.username.equals(username)) {
+            throw new RuntimeException("해당하는 유저네임이 맞지 않습니다.");
+        }
+        if (!this.name.equals(name)) {
+            throw new RuntimeException("해당하는 이름이 맞지 않습니다.");
+        }
+        if (!this.phoneNumber.equals(phoneNumber)) {
+            throw new RuntimeException("해당하는 핸드폰번호가 맞지 않습니다.");
+        }
+
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void isCorrectPassword(PasswordEncoder passwordEncoder , String prePassword) {
+        if(passwordEncoder.matches( this.password , prePassword)){
+            throw new RuntimeException("해당 패스워드는 맞지 않습니다.");
+        }
     }
 }
 

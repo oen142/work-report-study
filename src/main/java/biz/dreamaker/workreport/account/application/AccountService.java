@@ -2,13 +2,11 @@ package biz.dreamaker.workreport.account.application;
 
 import biz.dreamaker.workreport.account.domain.Account;
 import biz.dreamaker.workreport.account.domain.Company;
-import biz.dreamaker.workreport.account.dto.AdminInfoRequest;
-import biz.dreamaker.workreport.account.dto.AdminInfoResponse;
-import biz.dreamaker.workreport.account.dto.CompanyRequest;
-import biz.dreamaker.workreport.account.dto.CompanyResponse;
+import biz.dreamaker.workreport.account.dto.*;
 import biz.dreamaker.workreport.account.repository.AccountRepository;
 
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import biz.dreamaker.workreport.account.repository.CompanyRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -81,5 +79,28 @@ public class AccountService {
         Company company = companyRepository.findByAccountUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을수 없습니다."));
         return CompanyResponse.of(company);
+    }
+
+    public PasswordResponse findPassword(FindPasswordRequest request) {
+        Account account = accountRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을 수 없습니다."));
+
+        account.isCorrect(request.getUsername(), request.getName(), request.getPhoneNumber());
+
+        String password = UUID.randomUUID().toString();
+
+        account.updatePassword(passwordEncoder.encode(password));
+        return PasswordResponse.of(password);
+    }
+
+    public void updatePassword(String username, UpdatePasswordRequest request) {
+
+        Account account = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을 수 없습니다."));
+
+        account.isCorrectPassword(passwordEncoder, request.getPrePassword());
+
+        account.updatePassword(passwordEncoder.encode(request.getNewPassword()));
+
     }
 }

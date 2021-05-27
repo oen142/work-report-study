@@ -9,6 +9,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 import java.util.stream.Stream;
+
+import org.apache.tomcat.jni.File;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -29,6 +31,9 @@ public class FileSystemStorageService implements StorageService {
 
     @Override
     public String store(MultipartFile file) {
+        if (file.getOriginalFilename().isEmpty()) {
+            throw new RuntimeException("해당 파일을 확인해주세요");
+        }
         String fileName = UUID.randomUUID() + "." + file.getOriginalFilename().split("\\.")[1];
 
         try {
@@ -37,16 +42,16 @@ public class FileSystemStorageService implements StorageService {
                 return "emptyFile";
             }
             Path destinationFile = this.rootLocation.resolve(
-                Paths.get(fileName))
-                .normalize().toAbsolutePath();
+                    Paths.get(fileName))
+                    .normalize().toAbsolutePath();
             if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
                 // This is a security check
                 throw new StorageException(
-                    "Cannot store file outside current directory.");
+                        "Cannot store file outside current directory.");
             }
             try (InputStream inputStream = file.getInputStream()) {
                 Files.copy(inputStream, destinationFile,
-                    StandardCopyOption.REPLACE_EXISTING);
+                        StandardCopyOption.REPLACE_EXISTING);
             }
             return fileName;
         } catch (IOException e) {
@@ -58,8 +63,8 @@ public class FileSystemStorageService implements StorageService {
     public Stream<Path> loadAll() {
         try {
             return Files.walk(this.rootLocation, 1)
-                .filter(path -> !path.equals(this.rootLocation))
-                .map(this.rootLocation::relativize);
+                    .filter(path -> !path.equals(this.rootLocation))
+                    .map(this.rootLocation::relativize);
         } catch (IOException e) {
             throw new StorageException("Failed to read stored files", e);
         }
@@ -76,11 +81,12 @@ public class FileSystemStorageService implements StorageService {
         try {
             Path file = load(filename);
             Resource resource = new UrlResource(file.toUri());
+
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
                 throw new StorageFileNotFoundException(
-                    "Could not read file: " + filename);
+                        "Could not read file: " + filename);
 
             }
         } catch (MalformedURLException e) {
