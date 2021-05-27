@@ -168,5 +168,39 @@ public class WorkReport extends BasicEntity {
         this.dispatcherEmail = dispatcherEmail;
         this.pdfLocation = pdfLocation;
     }
+
+    public void update(LocalDate workedAt, String companyName, String workPlaceName, String workerName, String workerPhoneNumber, String workDevice,
+                       String workDeviceNumber, LocalDateTime workStartDateTime,
+                       LocalDateTime workEndDateTime, Long workPay, Long addedPay,  boolean payedStatus, LocalDate payedDate,
+                       String gasStationName, Long gasAmount, Long gasPrice,
+                       String representativeName, String representativePhoneNumber, String representativeCompanyNumber,
+                       String representativeFaxNumber, String dispatcherName, String dispatcherPhoneNumber, Address workAddress, String memo, List<Picture> pictures) {
+        this.workedAt = workedAt;
+        this.companyName = companyName;
+        this.workPlaceName = workPlaceName;
+        this.workerName = workerName;
+        this.workerPhoneNumber = workerPhoneNumber;
+        this.workDevice = workDevice;
+        this.workDeviceNumber = workDeviceNumber;
+        this.workStartDateTime = workStartDateTime;
+        this.workEndDateTime = workEndDateTime;
+        this.workPay = workPay;
+        this.addedPay = addedPay;
+        this.payedStatus = payedStatus;
+        this.payedDate = payedDate;
+        this.gasStationName = gasStationName;
+        this.gasAmount = gasAmount;
+        this.gasPrice = gasPrice;
+        this.representativeName = representativeName;
+        this.representativePhoneNumber = representativePhoneNumber;
+        this.representativeCompanyNumber = representativeCompanyNumber;
+        this.representativeFaxNumber = representativeFaxNumber;
+        this.dispatcherName = dispatcherName;
+        this.dispatcherPhoneNumber = dispatcherPhoneNumber;
+        this.workAddress = workAddress;
+        this.memo = memo;
+        this.pictures.clear();
+        this.pictures.addAll(pictures);
+    }
 }
 

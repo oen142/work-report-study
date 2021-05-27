@@ -26,6 +26,8 @@ public class AccountEnrollController {
         this.accountService = accountService;
     }
 
+
+
     @GetMapping("/api/account/me")
     public ResponseEntity<AdminInfoResponse> findAdminMine(Authentication authentication) {
         String username = getLoginAccountUsername(authentication);

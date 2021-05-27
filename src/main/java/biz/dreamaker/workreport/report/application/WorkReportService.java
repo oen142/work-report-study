@@ -55,7 +55,7 @@ public class WorkReportService {
 
         String pdfLocation = pdfService.generatePdf(generateMessage(workReport), file);
 
-        workReport.sign(file, dispatcherEmail , pdfLocation);
+        workReport.sign(file, dispatcherEmail, pdfLocation);
 
         emailService.sendSimpleMessageUsingTemplate(workReport.getDispatcherEmail(), LocalDate.now() + "날짜 작업일보입니다.",
                 workReport.getDispatcherName(), workReport.getWorkerName(), workReport.getWorkedAt() + "");
@@ -131,11 +131,50 @@ public class WorkReportService {
     }
 
     public List<WorkReportInfoResponse> findAllByAccountId(Long accountId) {
-        return null;
+        List<WorkReport> workReports = workReportRepository.findAllByAccountId(accountId);
+        return workReports.stream()
+                .map(w -> WorkReportInfoResponse.ofNew(w))
+                .collect(Collectors.toList());
     }
 
     public WorkReportInfoResponse findById(Long workReportId) {
         return WorkReportInfoResponse.ofNew(workReportRepository.findById(workReportId)
                 .orElseThrow(() -> new NoSuchElementException("해당 유저네임을 가진 아이디를 찾을 수 없습니다.")));
+    }
+
+    public WorkReportInfoResponse updateWorkReport(Long id, WorkReportInfoRequest request, List<String> uploadedFiles) {
+        WorkReport workReport = workReportRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("해당 작업일보를 찾을 수 없습니다."));
+
+
+        List<Picture> pictures = uploadedFiles.stream()
+                .map(file -> Picture.ofNew(file))
+                .collect(Collectors.toList());
+        workReport.update(request.getWorkedAt(),
+                request.getCompanyName(),
+                request.getWorkPlaceName(),
+                request.getWorkerName(),
+                request.getWorkerPhoneNumber(),
+                request.getWorkDevice(),
+                request.getWorkDeviceNumber(),
+                request.getWorkStartDateTime(),
+                request.getWorkEndDateTime(),
+                request.getWorkPay(),
+                request.getAddedPay(),
+                request.isPayedStatus(),
+                request.getPayedDate(),
+                request.getGasStationName(),
+                request.getGasAmount(),
+                request.getGasPrice(),
+                request.getRepresentativeName(),
+                request.getRepresentativePhoneNumber(),
+                request.getRepresentativeCompanyNumber(),
+                request.getRepresentativeFaxNumber(),
+                request.getDispatcherName(),
+                request.getDispatcherPhoneNumber(),
+                request.getWorkAddress().toAddress(),
+                request.getMemo(), pictures);
+        workReportRepository.save(workReport);
+        return WorkReportInfoResponse.ofNew(workReport);
     }
 }

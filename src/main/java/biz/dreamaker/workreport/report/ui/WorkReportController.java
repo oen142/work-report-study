@@ -38,7 +38,7 @@ public class WorkReportController {
         return ResponseEntity.ok().body(responses);
     }
 
-    @GetMapping("/api/work-report/id}")
+    @GetMapping("/api/work-report/{id}")
     public ResponseEntity<WorkReportInfoResponse> findWorkReport(@PathVariable("id") Long workReportId) {
         WorkReportInfoResponse response = workReportService.findById(workReportId);
         return ResponseEntity.ok().body(response);
@@ -54,18 +54,44 @@ public class WorkReportController {
 
         List<String> uploadedFiles = new ArrayList<>();
 
-        request.getFiles().forEach(f -> {
-            String storeHref = storageService.store(f);
-            Path path = storageService.load(storeHref);
+        if (!request.getFiles().isEmpty()) {
+            request.getFiles().forEach(f -> {
+                String storeHref = storageService.store(f);
+                Path path = storageService.load(storeHref);
 
-            uploadedFiles.add(MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
-                    "serveFile", path.getFileName().toString())
-                    .build()
-                    .toUri()
-                    .toString());
-        });
+                uploadedFiles.add(MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
+                        "serveFile", path.getFileName().toString())
+                        .build()
+                        .toUri()
+                        .toString());
+            });
+        }
 
         WorkReportInfoResponse response = workReportService.enrollWorkReport(username, request, uploadedFiles);
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PutMapping("/api/work-report/{id}")
+    public ResponseEntity<WorkReportInfoResponse> updateWorkReport(
+            WorkReportInfoRequest request,
+            @PathVariable Long id
+    ) {
+        List<String> uploadedFiles = new ArrayList<>();
+        if (!request.getFiles().isEmpty()) {
+            request.getFiles().forEach(f -> {
+                String storeHref = storageService.store(f);
+                Path path = storageService.load(storeHref);
+
+                uploadedFiles.add(MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
+                        "serveFile", path.getFileName().toString())
+                        .build()
+                        .toUri()
+                        .toString());
+            });
+        }
+
+        WorkReportInfoResponse response = workReportService.updateWorkReport(id, request, uploadedFiles);
 
         return ResponseEntity.ok().body(response);
     }

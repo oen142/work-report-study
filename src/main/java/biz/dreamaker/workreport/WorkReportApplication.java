@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootApplication
 @EnableAsync
+@Slf4j
 public class WorkReportApplication {
 
     public static void main(String[] args) {
@@ -31,6 +33,7 @@ public class WorkReportApplication {
     CommandLineRunner bootstrapTestAccount(AccountRepository accountRepository,
                                            PasswordEncoder passwordEncoder) {
 
+        log.error("init application");
         return args -> {
             Account superAdmin = Account
                     .ofSuper("super", "슈퍼유저", passwordEncoder.encode("admin"), "010-0000-0000");
@@ -42,6 +45,8 @@ public class WorkReportApplication {
             accountRepository.save(superAdmin);
             accountRepository.save(admin);
             accountRepository.save(admin1);
+
+
         };
     }
 
