@@ -19,7 +19,7 @@ public class Company {
     @Column(name = "company_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Account account;
 
     @Enumerated(EnumType.STRING)
@@ -42,9 +42,10 @@ public class Company {
 
     private String faxNumber;
 
-
     @Builder(access = AccessLevel.PRIVATE)
-    private Company(Long id, Account account, CompanyRole companyRole, String companyNumber, String bossName, Address address, LocalDate openDate, String companyBusiness, String email, String phoneNumber, String faxNumber) {
+    private Company(Long id, Account account, CompanyRole companyRole, String companyNumber,
+        String bossName, Address address, LocalDate openDate, String companyBusiness, String email,
+        String phoneNumber, String faxNumber) {
         this.id = id;
         this.account = account;
         this.companyRole = companyRole;
@@ -58,50 +59,79 @@ public class Company {
         this.faxNumber = faxNumber;
     }
 
-    public static Company ofPersonal(Account account, String companyNumber, String bossName, Address address, LocalDate openDate,
-                                     String companyBusiness, String email, String phoneNumber,
-                                     String faxNumber) {
+    public static Company ofPersonal(Account account, String companyNumber, String bossName,
+        Address address, LocalDate openDate,
+        String companyBusiness, String email, String phoneNumber,
+        String faxNumber) {
 
         account.updateCompany();
 
         return Company.builder()
-                .account(account)
-                .companyRole(CompanyRole.PERSONAL)
-                .companyNumber(companyNumber)
-                .bossName(bossName)
-                .address(address)
-                .openDate(openDate)
-                .companyBusiness(companyBusiness)
-                .email(email)
-                .phoneNumber(phoneNumber)
-                .faxNumber(faxNumber)
-                .build();
+            .account(account)
+            .companyRole(CompanyRole.PERSONAL)
+            .companyNumber(companyNumber)
+            .bossName(bossName)
+            .address(address)
+            .openDate(openDate)
+            .companyBusiness(companyBusiness)
+            .email(email)
+            .phoneNumber(phoneNumber)
+            .faxNumber(faxNumber)
+            .build();
     }
 
-    public static Company ofGroup(Account account, String companyNumber, String bossName, Address address, LocalDate openDate,
-                                  String companyBusiness, String email, String phoneNumber,
-                                  String faxNumber) {
+    public static Company ofGroup(Account account, String companyNumber, String bossName,
+        Address address, LocalDate openDate,
+        String companyBusiness, String email, String phoneNumber,
+        String faxNumber) {
 
         account.updateCompany();
 
         return Company.builder()
-                .account(account)
-                .companyRole(CompanyRole.PERSONAL)
-                .companyNumber(companyNumber)
-                .bossName(bossName)
-                .address(address)
-                .openDate(openDate)
-                .companyBusiness(companyBusiness)
-                .email(email)
-                .phoneNumber(phoneNumber)
-                .faxNumber(faxNumber)
-                .build();
+            .account(account)
+            .companyRole(CompanyRole.PERSONAL)
+            .companyNumber(companyNumber)
+            .bossName(bossName)
+            .address(address)
+            .openDate(openDate)
+            .companyBusiness(companyBusiness)
+            .email(email)
+            .phoneNumber(phoneNumber)
+            .faxNumber(faxNumber)
+            .build();
     }
 
-    public void update(CompanyRole companyRole, String companyNumber, String bossName, Address address, LocalDate openDate,
-                       String companyBusiness, String email, String phoneNumber,
-                       String faxNumber) {
+    public void update(CompanyRole companyRole, String companyNumber, String bossName,
+        Address address, LocalDate openDate,
+        String companyBusiness, String email, String phoneNumber,
+        String faxNumber) {
         this.companyRole = companyRole;
+        this.companyNumber = companyNumber;
+        this.bossName = bossName;
+        this.address = address;
+        this.openDate = openDate;
+        this.companyBusiness = companyBusiness;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.faxNumber = faxNumber;
+    }
+
+    public void updatePersonal() {
+        this.companyRole = CompanyRole.PERSONAL;
+    }
+
+    public void updateGroup() {
+        this.companyRole = CompanyRole.PERSONAL;
+    }
+
+    public void deleteAccount() {
+    }
+
+    public void updateInfo(String companyNumber, String bossName,
+        Address address, LocalDate openDate,
+        String companyBusiness, String email, String phoneNumber,
+        String faxNumber) {
+
         this.companyNumber = companyNumber;
         this.bossName = bossName;
         this.address = address;

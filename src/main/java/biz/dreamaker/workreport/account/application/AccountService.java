@@ -22,7 +22,8 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
 
     public AccountService(
-            AccountRepository accountRepository, CompanyRepository companyRepository, PasswordEncoder passwordEncoder) {
+        AccountRepository accountRepository, CompanyRepository companyRepository,
+        PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.companyRepository = companyRepository;
         this.passwordEncoder = passwordEncoder;
@@ -30,7 +31,7 @@ public class AccountService {
 
     public AdminInfoResponse findByUsername(String username) {
         return AdminInfoResponse.from(accountRepository.findByUsername(username).orElseThrow(
-                () -> new NoSuchElementException("해당하는 아이디를 찾을 수 없습니다.")));
+            () -> new NoSuchElementException("해당하는 아이디를 찾을 수 없습니다.")));
     }
 
     public AdminInfoResponse enrollPersonal(AdminInfoRequest request) {
@@ -42,48 +43,56 @@ public class AccountService {
 
     public AdminInfoResponse updateAccount(Long id, AdminInfoRequest request) {
         Account account = accountRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을수 없습니다."));
+            .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을수 없습니다."));
 
         account.update(request.getName(), request.getPhoneNumber());
         return AdminInfoResponse.from(account);
     }
 
-    public AdminInfoResponse updateAccountForCompanyOfPersonal(String username, CompanyRequest request) {
+    public AdminInfoResponse updateAccountForCompanyOfPersonal(String username,
+        CompanyRequest request) {
         Account account = accountRepository.findByUsername(username)
-                .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을수 없습니다."));
+            .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을수 없습니다."));
 
         boolean isAccount = companyRepository.existsByAccount(account);
         if (isAccount) {
-            throw new RuntimeException("해당 아이디로 등록되어 있는 회사계정이 있습니다.");
+            Company company = companyRepository.findByAccount(account)
+                .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을수 없습니다."));
+            company.updatePersonal();
+        } else {
+            Company company = request.ofPersonal(account);
+            companyRepository.save(company);
         }
-        Company company = request.ofPersonal(account);
-        companyRepository.save(company);
         return AdminInfoResponse.from(account);
     }
 
-    public AdminInfoResponse updateAccountForCompanyOfGroup(String username, CompanyRequest request) {
+    public AdminInfoResponse updateAccountForCompanyOfGroup(String username,
+        CompanyRequest request) {
         Account account = accountRepository.findByUsername(username)
-                .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을수 없습니다."));
+            .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을수 없습니다."));
 
         boolean isAccount = companyRepository.existsByAccount(account);
         if (isAccount) {
-            throw new RuntimeException("해당 아이디로 등록되어 있는 회사계정이 있습니다.");
+            Company company = companyRepository.findByAccount(account)
+                .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을수 없습니다."));
+            company.updateGroup();
+        } else {
+            Company company = request.ofGroup(account);
+            companyRepository.save(company);
         }
-        Company company = request.ofGroup(account);
-        companyRepository.save(company);
         return AdminInfoResponse.from(account);
     }
 
     public CompanyResponse findByUsernameCompany(String username) {
 
         Company company = companyRepository.findByAccountUsername(username)
-                .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을수 없습니다."));
+            .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을수 없습니다."));
         return CompanyResponse.of(company);
     }
 
     public PasswordResponse findPassword(FindPasswordRequest request) {
         Account account = accountRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을 수 없습니다."));
+            .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을 수 없습니다."));
 
         account.isCorrect(request.getUsername(), request.getName(), request.getPhoneNumber());
 
@@ -96,11 +105,31 @@ public class AccountService {
     public void updatePassword(String username, UpdatePasswordRequest request) {
 
         Account account = accountRepository.findByUsername(username)
-                .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을 수 없습니다."));
+            .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을 수 없습니다."));
 
         account.isCorrectPassword(passwordEncoder, request.getPrePassword());
 
         account.updatePassword(passwordEncoder.encode(request.getNewPassword()));
 
+    }
+
+    public void updateAccountForPersonal(String username) {
+        Company company = companyRepository.findByAccountUsername(username)
+            .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을 수 없습니다."));
+
+        company.getAccount().updatePersonal();
+        companyRepository.delete(company);
+    }
+
+    public CompanyResponse updateAccountForCompany(Long id, CompanyRequest request) {
+
+        Company company = companyRepository.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("해당하는 아이디를 찾을 수 없습니다."));
+
+        company.updateInfo(request.getCompanyNumber(), request.getBossName(),
+            request.getAddress().toAddress(), request.getOpenDate(), request.getCompanyBusiness(),
+            request.getEmail(), request.getPhoneNumber(), request.getFaxNumber());
+
+        return CompanyResponse.of(company);
     }
 }

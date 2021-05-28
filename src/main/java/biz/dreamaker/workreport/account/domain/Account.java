@@ -44,7 +44,7 @@ public class Account extends BasicEntity {
 
     @Builder
     private Account(Long id, String username, String name, String password,
-                    UserRole userRole, String phoneNumber, boolean deleted) {
+        UserRole userRole, String phoneNumber, boolean deleted) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -54,40 +54,43 @@ public class Account extends BasicEntity {
         this.deleted = deleted;
     }
 
-    public static Account ofUser(String username, String name, String password, String phoneNumber) {
+    public static Account ofUser(String username, String name, String password,
+        String phoneNumber) {
         return Account.builder()
-                .id(null)
-                .username(username)
-                .name(name)
-                .password(password)
-                .userRole(UserRole.PERSONAL)
-                .phoneNumber(phoneNumber)
-                .deleted(false)
-                .build();
+            .id(null)
+            .username(username)
+            .name(name)
+            .password(password)
+            .userRole(UserRole.PERSONAL)
+            .phoneNumber(phoneNumber)
+            .deleted(false)
+            .build();
     }
 
-    public static Account ofAdmin(String username, String name, String password, String phoneNumber) {
+    public static Account ofAdmin(String username, String name, String password,
+        String phoneNumber) {
         return Account.builder()
-                .id(null)
-                .username(username)
-                .name(name)
-                .password(password)
-                .userRole(UserRole.COMPANY)
-                .phoneNumber(phoneNumber)
-                .deleted(false)
-                .build();
+            .id(null)
+            .username(username)
+            .name(name)
+            .password(password)
+            .userRole(UserRole.COMPANY)
+            .phoneNumber(phoneNumber)
+            .deleted(false)
+            .build();
     }
 
-    public static Account ofSuper(String username, String name, String password, String phoneNumber) {
+    public static Account ofSuper(String username, String name, String password,
+        String phoneNumber) {
         return Account.builder()
-                .id(null)
-                .username(username)
-                .name(name)
-                .password(password)
-                .userRole(UserRole.PERSONAL)
-                .phoneNumber(phoneNumber)
-                .deleted(false)
-                .build();
+            .id(null)
+            .username(username)
+            .name(name)
+            .password(password)
+            .userRole(UserRole.PERSONAL)
+            .phoneNumber(phoneNumber)
+            .deleted(false)
+            .build();
     }
 
     public void update(String name, String phoneNumber) {
@@ -116,10 +119,18 @@ public class Account extends BasicEntity {
         this.password = password;
     }
 
-    public void isCorrectPassword(PasswordEncoder passwordEncoder , String prePassword) {
-        if(passwordEncoder.matches( this.password , prePassword)){
+    public void isCorrectPassword(PasswordEncoder passwordEncoder, String prePassword) {
+        if (passwordEncoder.matches(this.password, prePassword)) {
             throw new RuntimeException("해당 패스워드는 맞지 않습니다.");
         }
+    }
+
+    public void updatePersonal() {
+        this.userRole = UserRole.PERSONAL;
+    }
+
+    public void updateGroup() {
+        this.userRole = UserRole.COMPANY;
     }
 }
 
